@@ -88,7 +88,11 @@ y_2\)</span></p>
 <p>将 <span class="math inline">\(x_2,y_2\)</span> 不断代入递归求解直至
 <span class="math inline">\(\gcd\)</span>（最大公约数，下同）为
 <code>0</code> 递归 <code>x=1,y=0</code> 回去求解。</p>
+<details class="note info no-icon"><summary><p>code</p>
+</summary>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!b) &#123;</span><br><span class="line">    x = <span class="number">1</span>;</span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> d = <span class="built_in">exgcd</span>(b, a % b, x, y);</span><br><span class="line">  <span class="type">int</span> t = x;</span><br><span class="line">  x = y;</span><br><span class="line">  y = t - (a / b) * y;</span><br><span class="line">  <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</details>
 <h2 id="同余方程">同余方程</h2>
 <p>求关于 $ x$ 的同余方程 $ a x $ 的最小正整数解。</p>
 <p>对于 <span class="math inline">\(100\%\)</span> 的数据，<span
