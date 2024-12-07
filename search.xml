@@ -119,12 +119,12 @@ class="math inline">\(u\)</span>
     <content><![CDATA[<h2 id="辗转相除法">辗转相除法</h2>
 <p><strong>等式 1</strong> 如果 <span class="math inline">\(a |
 b\)</span> 且 <span class="math inline">\(b|a\)</span>，那么 <span
-class="math inline">\(a\pm b\)</span></p>
+class="math inline">\(a= b\)</span></p>
 <p><strong>等式 2</strong> 如果 <span class="math inline">\(d|a\)</span>
 且 <span class="math inline">\(d|b\)</span> 那么 <span
 class="math inline">\(d|(ax + by)\ x,y \in Z\)</span></p>
 <p><strong>等式 3</strong> <span class="math inline">\(a\bmod\ n = a -
-n⌊\frac{a}{n}⌋\)</span>; a∈Z,n∈N*(正整数)</p>
+n⌊\frac{a}{n}⌋;a\in Z,n\in N^{*}\)</span></p>
 <p><strong>推论 1</strong> 对任意整数 <span
 class="math inline">\(a\)</span> , <span
 class="math inline">\(b\)</span>，如果 <span
