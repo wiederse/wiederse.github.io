@@ -16,7 +16,7 @@ class="math inline">\(c\)</span>​。要求 <span
 class="math inline">\(b\)</span> 和 <span
 class="math inline">\(c\)</span> 均非空，两个数组中各任取一个元素 <span
 class="math inline">\(b_i,c_j\)</span>，均满足 <span
-class="math inline">\(gcd(b_i,c_j)=1\)</span>。</p>
+class="math inline">\(\gcd(b_i,c_j)=1\)</span>。</p>
 <h2 id="思路">思路</h2>
 <p>先用筛法预处理出 <span class="math inline">\(10^6\)</span>
 范围内每个数的素因子。</p>
@@ -117,73 +117,85 @@ class="math inline">\(u\)</span>
     <title>一些数论算法及证明</title>
     <url>/2024/01/25/%E4%B8%80%E4%BA%9B%E6%95%B0%E8%AE%BA%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AF%81%E6%98%8E/</url>
     <content><![CDATA[<h2 id="辗转相除法">辗转相除法</h2>
-<p><strong>等式 1</strong> 如果 <span class="math inline">\(a |
-b\)</span> 且 <span class="math inline">\(b|a\)</span>，那么 <span
-class="math inline">\(a= b\)</span></p>
-<p><strong>等式 2</strong> 如果 <span class="math inline">\(d|a\)</span>
-且 <span class="math inline">\(d|b\)</span> 那么 <span
-class="math inline">\(d|(ax + by)\ x,y \in Z\)</span></p>
+<p><strong>等式 1</strong> 如果 <span class="math inline">\(a\mid
+b\)</span> 且 <span class="math inline">\(b\mid a\)</span>，那么 <span
+class="math inline">\(a=b\)</span></p>
+<p><strong>等式 2</strong> 如果 <span class="math inline">\(d\mid
+a\)</span> 且 <span class="math inline">\(d\mid b\)</span> 那么 <span
+class="math inline">\(d\mid(ax + by);x,y \in Z\)</span></p>
 <p><strong>等式 3</strong> <span class="math inline">\(a\bmod\ n = a -
-n⌊\frac{a}{n}⌋;a\in Z,n\in N^{*}\)</span></p>
+n\left \lfloor\frac{a}{n}\right \rfloor;a\in Z,n\in N^{*}\)</span></p>
 <p><strong>推论 1</strong> 对任意整数 <span
-class="math inline">\(a\)</span> , <span
-class="math inline">\(b\)</span>，如果 <span
-class="math inline">\(d|a\)</span> 且 <span
-class="math inline">\(d|b\)</span> 则 <span
-class="math inline">\(d|gcd(a, b)\)</span></p>
-<p>如果我们想要获得结论 <span class="math inline">\(gcd(a,\ b) = gcd(b,\
-a\bmod\ b)\)</span></p>
-<p>那么我们只需要证明 <span class="math inline">\(gcd(a,b)|gcd(b, a\bmod
-b)\)</span> 且 <span class="math inline">\(gcd(b,a\bmod
-b)|gcd(a,b)\)</span> 就可以来证明它俩相等了。</p>
-<h3 id="证明-gcdabgcdbabmod-b">证明 <span
-class="math inline">\(gcd(a,b)|gcd(b,a\bmod b)\)</span></h3>
+class="math inline">\(a\)</span>, <span
+class="math inline">\(b\)</span>，如果 <span class="math inline">\(d\mid
+a\)</span> 且 <span class="math inline">\(d\mid b\)</span> 则 <span
+class="math inline">\(d\mid\gcd(a, b)\)</span></p>
+<p>如果我们想要获得结论 <span class="math inline">\(\gcd(a,b) =
+\gcd(b,a\bmod\ b)\)</span></p>
+<p>那么我们只需要证明 <span
+class="math inline">\(\gcd(a,b)\mid\gcd(b,a\bmod b)\)</span> 且 <span
+class="math inline">\(\gcd(b,a\bmod b)\mid\gcd(a,b)\)</span>
+就可以来证明它俩相等了。</p>
+<h3 id="证明-gcdabmidgcdbabmod-b">证明 <span
+class="math inline">\(\gcd(a,b)\mid\gcd(b,a\bmod b)\)</span></h3>
 <blockquote>
-<p>设 <span class="math inline">\(d = gcd(a, b)\)</span> <span
-class="math inline">\(∴ d|a 且 d|b\)</span> 由 <strong>等式 3</strong>
-可知：<span class="math inline">\((a\bmod\ b) = a - qb\quad q =
-⌊a/b⌋\)</span> <span class="math inline">\(∴ a\bmod\ b\)</span> 是 a 与
-b 的<strong>线性组合</strong> 由 <strong>等式 2</strong> 可知 ：<span
-class="math inline">\(d|(a\bmod\ b)\)</span> ∵ <span
-class="math inline">\(d|b\)</span> 且 <span
-class="math inline">\(d|(a\bmod\ b)\)</span> ∴ 由 <strong>推论
-1</strong> 可知 <span class="math inline">\(d|gcd(b, a\bmod\ b)\)</span>
-<strong>等价结论：</strong> <span class="math inline">\(gcd(a, b)|gcd(b,
-a\bmod\ b)\)</span></p>
+<p>设 <span class="math inline">\(d = \gcd(a, b)\)</span> <span
+class="math inline">\(\therefore d\mid a\)</span> 且 <span
+class="math inline">\(d\mid b\)</span>。<br />
+由 <strong>等式 3</strong> 可知：<span class="math inline">\(a\pmod b =
+a - qb,q = \left \lfloor\frac{a}{b}\right \rfloor\)</span><br />
+<span class="math inline">\(\therefore a\bmod\ b\)</span> 是 a 与 b
+的<strong>线性组合</strong><br />
+由 <strong>等式 2</strong> 可知：<span class="math inline">\(d\mid
+a\pmod b\)</span><br />
+<span class="math inline">\(\because d\mid b\)</span> 且 <span
+class="math inline">\(d\mid a\pmod b\)</span><br />
+<span class="math inline">\(\therefore\)</span> 由 <strong>推论
+1</strong> 可知 <span class="math inline">\(d\mid\gcd(b, a\bmod\
+b)\)</span><br />
+<strong>等价结论：</strong> <span class="math inline">\(\gcd(a,
+b)\mid\gcd(b, a\bmod\ b)\)</span></p>
 </blockquote>
-<h3 id="证明-gcdbabmod-bgcdab">证明 <span
-class="math inline">\(gcd(b,a\bmod\ b)|gcd(a,b)\)</span></h3>
+<h3 id="证明-gcdbabmod-bmidgcdab">证明 <span
+class="math inline">\(\gcd(b,a\bmod\ b)\mid\gcd(a,b)\)</span></h3>
 <blockquote>
-<p>设 <span class="math inline">\(c = gcd(b, a\bmod\ b)\)</span> ∴ <span
-class="math inline">\(c|b 且 c|(a\bmod\ b)\)</span> ∵ <span
-class="math inline">\(a = qb + r\)</span> <span class="math inline">\(r
-= a\bmod\ b\)</span> <span class="math inline">\(q =
-⌊\frac{a}{b}⌋\)</span> ∴ <span class="math inline">\(a\)</span> 是 <span
-class="math inline">\(b\)</span> 和 <span class="math inline">\((a\bmod\
-b)\)</span> 的<strong>线性组合</strong> ∴ 由 <strong>等式 2</strong>
-可知：<span class="math inline">\(c|a\)</span> ∵ <span
-class="math inline">\(c|a\)</span> 且 <span
-class="math inline">\(c|b\)</span> ∴ 由 <strong>推论 1</strong>
-可知：<span class="math inline">\(c|gcd(a, b)\)</span>
-<strong>等价结论：</strong> <span class="math inline">\(gcd(b, a\bmod\
-b)|gcd(a, b)\)</span></p>
+<p>设 <span class="math inline">\(c = \gcd(b, a\bmod\ b)\)</span><br />
+<span class="math inline">\(\therefore c\mid b\)</span> 且 <span
+class="math inline">\(c\mid a\pmod b\)</span><br />
+<span class="math inline">\(\because a = qb + r,r = a\bmod\ b,q = \left
+\lfloor\frac{a}{b}\right \rfloor\)</span><br />
+<span class="math inline">\(\therefore a\)</span> 是 <span
+class="math inline">\(b\)</span> 和 <span class="math inline">\(a\bmod\
+b\)</span> 的<strong>线性组合</strong><br />
+由 <strong>等式 2</strong> 可知：<span class="math inline">\(c\mid
+a\)</span><br />
+<span class="math inline">\(\because c\mid a\)</span> 且 <span
+class="math inline">\(c\mid b\)</span><br />
+由 <strong>推论 1</strong> 可知：<span
+class="math inline">\(c\mid\gcd(a, b)\)</span><br />
+<strong>等价结论：</strong> <span class="math inline">\(\gcd(b, a\bmod\
+b)\mid\gcd(a, b)\)</span></p>
 </blockquote>
 <h3 id="证明-gcdab-gcdb-abmod-b">证明 <span
-class="math inline">\(gcd(a,b) = gcd(b, a\bmod b)\)</span></h3>
+class="math inline">\(\gcd(a,b) = \gcd(b, a\bmod b)\)</span></h3>
 <blockquote>
-<p>由 上述两个结论 可知： <span class="math inline">\(gcd(a, b)|gcd(b,
-a\bmod\ b)\)</span> <span class="math inline">\(gcd(b, a\bmod\ b)|gcd(a,
-b)\)</span> ∴ 由 <strong>等式 1</strong> 可知： <span
-class="math inline">\(gcd(a, b) = gcd(b, a\bmod\ b)\)</span></p>
+<p>由 上述两个结论 可知： <span class="math display">\[
+\begin{aligned}
+\gcd(a, b)\mid\gcd(b, a\bmod\ b)\\
+\gcd(b, a\bmod\ b)\mid\gcd(a, b)
+\end{aligned}
+\]</span> 由 <strong>等式 1</strong> 可知：<span
+class="math inline">\(\gcd(a, b) = \gcd(b, a\bmod\ b)\)</span></p>
 </blockquote>
 <h2 id="扩展欧几里得算法">扩展欧几里得算法</h2>
-<ul>
-<li>求 <span class="math inline">\(ax+by=gcd(a,b)\)</span></li>
-</ul>
+<p>求 <span class="math inline">\(ax+by=gcd(a,b)\)</span></p>
 <p>设</p>
-<p><span class="math inline">\(ax_1+by_1=\gcd(a,b)\)</span></p>
-<p><span class="math inline">\(bx_2+(a\bmod b)y_2=\gcd(b,a\bmod
-b)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+ax_1+by_1&amp;=\gcd(a,b) \\
+bx_2+(a\bmod b)y_2&amp;=\gcd(b,a\bmod b)
+\end{aligned}
+\]</span></p>
 <p>由欧几里得定理可知：<span
 class="math inline">\(\gcd(a,b)=\gcd(b,a\bmod b)\)</span></p>
 <p>所以 <span class="math inline">\(ax_1+by_1=bx_2+(a\bmod
@@ -207,17 +219,17 @@ y_2\)</span></p>
 
 </details>
 <h2 id="同余方程">同余方程</h2>
-<p>求关于 $ x$ 的同余方程 $ a x $ 的最小正整数解。</p>
+<p>求关于 $ x$ 的同余方程 $ a x b$ 的最小正整数解。</p>
 <p>对于 <span class="math inline">\(100\%\)</span> 的数据，<span
-class="math inline">\(2 ≤a, b≤ 2,000,000,000\)</span>。</p>
+class="math inline">\(2\le a, b\le 2,000,000,000\)</span>。</p>
 <h3 id="solution">solution</h3>
 <p><span class="math inline">\(ax\bmod\ b=1\)</span> 实质是 <span
 class="math inline">\(ax+by=1\)</span>。 <span
 class="math inline">\(y\)</span>
 是我们引入的某个整数，这里似乎是个负数。</p>
 <p>扩展欧几里得求 <span
-class="math inline">\(ax+by=gcd(a,b)\)</span>，所以这里 <span
-class="math inline">\(gcd(a,b)=1\)</span>，即 <span
+class="math inline">\(ax+by=\gcd(a,b)\)</span>，所以这里 <span
+class="math inline">\(\gcd(a,b)=1\)</span>，即 <span
 class="math inline">\(a\)</span>，<span class="math inline">\(b\)</span>
 互质。所以 <span class="math inline">\(a\)</span> 有模 <span
 class="math inline">\(b\)</span> 下的乘法逆元的条件为 <span
@@ -238,55 +250,64 @@ a(x+kb)+b(y-ka)=1
 <h2 id="二元一次不定方程">二元一次不定方程</h2>
 <p><a href="https://www.luogu.com.cn/problem/P5656">P5656
 【模板】二元一次不定方程 (exgcd) - 洛谷 | 计算机科学教育新生态
-(luogu.com.cn)</a> <span class="math display">\[
+(luogu.com.cn)</a></p>
+<p><span class="math display">\[
 ax+by=c
-\]</span> <span class="math inline">\(gcd(a,b)|(ax+by)\)</span>，若
-<span class="math inline">\(c\)</span> 不是 <span
-class="math inline">\(gcd(a,b)\)</span> 的倍数直接无解</p>
-<p>记 <span class="math inline">\(ax+by=gcd(a,b)\)</span> 的一组特解为
+\]</span></p>
+<p><span class="math inline">\(\gcd(a,b)\mid(ax+by)\)</span>，若 <span
+class="math inline">\(c\)</span> 不是 <span
+class="math inline">\(\gcd(a,b)\)</span> 的倍数直接无解</p>
+<p>记 <span class="math inline">\(ax+by=\gcd(a,b)\)</span> 的一组特解为
 <span class="math inline">\(x_0\)</span>，<span
-class="math inline">\(y_0\)</span>。则有 <span class="math display">\[
-ax_0+by_0=gcd(a,b) \\
-a\frac{x_0c}{gcd(a,b)}+b\frac{y_0c}{gcd(a,b)}=c
-\]</span> 故我们已经找到原方程的一组整数特解，记为 <span
+class="math inline">\(y_0\)</span>。则有:</p>
+<p><span class="math display">\[
+\begin{aligned}
+ax_0+by_0=\gcd(a,b) \\
+a\frac{x_0c}{\gcd(a,b)}+b\frac{y_0c}{\gcd(a,b)}=c
+\end{aligned}
+\]</span></p>
+<p>故我们已经找到原方程的一组整数特解，记为 <span
 class="math inline">\(x_1\)</span> 和 <span
-class="math inline">\(y_1\)</span> <span class="math display">\[
-x_1=\frac{x_0c}{gcd(a,b)}\quad y_1=\frac{y_0c}{gcd(a,b)}
-\]</span> 那么我们考虑构造原方程整数通解形式</p>
+class="math inline">\(y_1\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+x_1=\frac{x_0c}{\gcd(a,b)}, \quad y_1=\frac{y_0c}{\gcd(a,b)}
+\end{aligned}
+\]</span></p>
+<p>那么我们考虑构造原方程整数通解形式</p>
 <p>我们设任意 <span class="math inline">\(d\in Q\)</span>，那么必有
 <span class="math display">\[
 a(x_1+db)+b(y_1-da)=c
 \]</span> 显然对于最小的 <span class="math inline">\(db\)</span>，<span
 class="math inline">\(da\)</span>，<span
-class="math inline">\(d=\frac{1}{gcd(a,b)}\)</span></p>
+class="math inline">\(d=\frac{1}{\gcd(a,b)}\)</span></p>
 <p>然后像上面一样开始乱搞</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> d = <span class="built_in">exgcd</span>(a, b, x, y);</span><br><span class="line"><span class="keyword">if</span>(c % d) &#123;</span><br><span class="line">    cout &lt;&lt; <span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">x = c * x / d, y = c * y / d;</span><br><span class="line"><span class="type">int</span> dx = b / d, dy = a / d;</span><br><span class="line"><span class="type">int</span> minx = (x % dx + dx) % dx;</span><br><span class="line"><span class="keyword">if</span>(minx == <span class="number">0</span>) minx = dx;</span><br><span class="line"><span class="type">int</span> maxy = (c - a * minx) / b;</span><br><span class="line"><span class="type">int</span> miny = (y % dy + dy) % dy;</span><br><span class="line"><span class="keyword">if</span>(miny == <span class="number">0</span>) miny = dy;</span><br><span class="line"><span class="type">int</span> maxx = (c - b * miny) / a;</span><br></pre></td></tr></table></figure>
 <h2 id="中国剩余定理">中国剩余定理</h2>
 <h3 id="模数不互质的情况">模数不互质的情况</h3>
-<p>设两个方程分别是 <span class="math inline">\(x\equiv a_1\ (mod\
-m_1)\)</span>、<span class="math inline">\(x\equiv a_2\ (mod\
-m_2)\)</span>；</p>
+<p>设两个方程分别是 <span class="math inline">\(x\equiv a_1\pmod
+m_1,x\equiv a_2\pmod m_2\)</span></p>
 <p>将它们转化为不定方程：<span
 class="math inline">\(x=m_1p+a_1=m_2q+a_2\)</span>，其中 <span
 class="math inline">\(p, q\)</span> 是整数，则有 <span
 class="math inline">\(m_1p-m_2q=a_2-a_1\)</span>。</p>
 <p>由裴属定理，当 <span class="math inline">\(a_2-a_1\)</span> 不能被
-<span class="math inline">\(gcd(m_1,m_2)\)</span> 整除时，无解；</p>
+<span class="math inline">\(\gcd(m_1,m_2)\)</span> 整除时，无解；</p>
 <p>其他情况下，可以通过扩展欧几里得算法解出来一组可行解 <span
 class="math inline">\((p,q)\)</span>；</p>
 <p>则原来的两方程组的模方程组的解为 <span class="math inline">\(x\equiv
-b\ (mod\ M)\)</span>，其中 <span
-class="math inline">\(b=m_1p+a_1\)</span>, <span
-class="math inline">\(M=lcm(m_1,m_2)\)</span>。</p>
+b\pmod M\)</span>，其中 <span class="math inline">\(b=m_1p+a_1\)</span>,
+<span class="math inline">\(M=\mathrm{lcm}(m_1,m_2)\)</span>。</p>
 <h2 id="lucas-定理">Lucas 定理</h2>
-<p>对于质数 <span class="math inline">\(p\)</span>，有 <span
-class="math display">\[
+<p>对于质数 <span class="math inline">\(p\)</span>，有</p>
+<p><span class="math display">\[
 \binom{n}{m}\bmod
 p=\binom{\lfloor\frac{n}{p}\rfloor}{\lfloor\frac{m}{p}\rfloor}\cdot\binom{n\bmod
 p}{m\bmod p}\bmod p
-\]</span> 观察上述表达式，可知 <span class="math inline">\(n\bmod
-p\)</span> 和 <span class="math inline">\(m\bmod p\)</span> 一定是小于
-<span class="math inline">\(p\)</span>的数，可以直接求解，<span
+\]</span></p>
+<p>观察上述表达式，可知 <span class="math inline">\(n\bmod p\)</span> 和
+<span class="math inline">\(m\bmod p\)</span> 一定是小于 <span
+class="math inline">\(p\)</span> 的数，可以直接求解，<span
 class="math inline">\(\displaystyle\binom{\left\lfloor\frac{n}{p}\right\rfloor}{\left\lfloor\frac{m}{p}\right\rfloor}\)</span>
 可以继续用 Lucas 定理求解。这也就要求 <span
 class="math inline">\(p\)</span> 的范围不能够太大，一般在 <span
@@ -304,13 +325,13 @@ class="math inline">\(n = 0\)</span> 或 <span class="math inline">\(n =
 p\)</span> 的时候 <span class="math inline">\(n!(p-n)!\)</span>
 的质因子分解中含有 <span class="math inline">\(p\)</span>，因此 <span
 class="math inline">\(\displaystyle\binom{p}{n} \bmod p = [n = 0 \vee n
-= p]\)</span>。进而我们可以得出</p>
+= p]\)</span>。进而我们可以得出:</p>
 <p><span class="math display">\[
 \begin{align} (a+b)^p &amp;= \sum_{n=0}^p \binom pn a^n b^{p-n}\\
 &amp;\equiv \sum_{n=0}^p [n=0\vee n=p] a^n b^{p-n}\\ &amp;\equiv a^p +
 b^p \pmod p \end{align}
-\]</span>
-注意过程中没有用到费马小定理，因此这一推导不仅适用于整数，亦适用于多项式。因此我们可以考虑二项式
+\]</span></p>
+<p>注意过程中没有用到费马小定理，因此这一推导不仅适用于整数，亦适用于多项式。因此我们可以考虑二项式
 <span class="math inline">\(f^p(x)=(ax^n + bx^m)^p \bmod p\)</span>
 的结果</p>
 <p><span class="math display">\[
@@ -318,7 +339,7 @@ b^p \pmod p \end{align}
 &amp;\equiv ax^{pn} + bx^{pm}\\ &amp;\equiv f(x^p) \end{align}
 \]</span></p>
 <blockquote>
-<p>note: <span class="math inline">\(a^{(p-1)}\equiv
+<p>note: <span class="math inline">\(a^{p-1}\equiv
 1\pmod{p}\)</span></p>
 </blockquote>
 <p>考虑二项式 <span class="math inline">\((1+x)^n \bmod p\)</span>，那么
@@ -333,10 +354,13 @@ b^p \pmod p \end{align}
 的倍数位置才有取值，而后者最高次项为 <span class="math inline">\(n\bmod
 p \le
 p-1\)</span>，因此这两部分的卷积在任何一个位置只有最多一种方式贡献取值，即在前者部分取
-<span class="math inline">\(p\)</span> 的倍数次项，后者部分取剩余项，即
-<span class="math inline">\(\displaystyle\binom{n}{m}\bmod p =
-\binom{\left\lfloor n/p \right\rfloor}{\left\lfloor
-m/p\right\rfloor}\cdot\binom{n\bmod p}{m\bmod p}\bmod p\)</span>。</p>
+<span class="math inline">\(p\)</span>
+的倍数次项，后者部分取剩余项，即</p>
+<p><span class="math display">\[
+\displaystyle\binom{n}{m}\bmod p = \binom{\left\lfloor n/p
+\right\rfloor}{\left\lfloor m/p\right\rfloor}\cdot\binom{n\bmod
+p}{m\bmod p}\bmod p
+\]</span>。</p>
 <h2 id="扩展-lucas定理">扩展 Lucas定理</h2>
 <p><a
 href="https://www.luogu.com.cn/blog/wohaocaia/solution-p4720">扩展Lucas定理
@@ -351,7 +375,8 @@ class="math inline">\(f(n)=\sum_{d\mid
 n}\mu(d)F(\frac{n}{d})\)</span></p>
 <p>证明：</p>
 <p><span class="math inline">\(i\mid\frac{n}{d}\iff id\mid n\iff d\mid
-\frac{n}{i}\)</span> <span class="math display">\[
+\frac{n}{i}\)</span></p>
+<p><span class="math display">\[
 \begin{align}
 \sum_{d\mid n}\mu(d)F(\frac{n}{d})&amp;=\sum_{d\mid
 n}\mu(d)\sum_{i\mid\frac{n}{d}}f(i) \\
@@ -582,6 +607,18 @@ class="math inline">\(45\)</span> 比差距不大，只分成两块就可以通�
       </categories>
       <tags>
         <tag>根号分治</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《莫失莫忘》随笔</title>
+    <url>/2026/01/29/%E3%80%8A%E8%8E%AB%E5%A4%B1%E8%8E%AB%E5%BF%98%E3%80%8B%E9%9A%8F%E7%AC%94/</url>
+    <content><![CDATA[<p>石黑一雄虽从小在英国长大，但这篇作品，尤其后三章真相的揭露，字里行间流露着日本的“物哀”美学，一种无法言说的悲伤，无可慰藉的苦痛。小说中的人物只能在既定框架下面对早已注定的命运，没有反抗，甚至连逃避都没有，不免让人“恼火”。可事实上现实不也如此，在社会这个大浪潮下，你又能改变些什么呢？有时我在想，上帝宏观不掷骰子，微观掷骰子。你的努力只是微观层面上的扰动，改变不了整体宏观层面上早已注定的命运，甚至连你的努力都是确定性的。这么一想不免悲从中来，但正因如此，我拼了命也要改变些什么，留下些什么……</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
 </search>
