@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2023 天梯赛 L2-3 锦标赛</title>
+    <url>/2024/02/29/2023%E5%A4%A9%E6%A2%AF%E8%B5%9BL2-3%E9%94%A6%E6%A0%87%E8%B5%9B/</url>
+    <content><![CDATA[<h2 id="题目链接">题目链接</h2>
+<p><a
+href="https://pintia.cn/problem-sets/994805046380707840/exam/problems/1649748772841508874?type=7&amp;page=1">L2-047
+锦标赛 - 团体程序设计天梯赛-练习集 (pintia.cn)</a></p>
+<h2 id="思路">思路</h2>
+<p>​
+一开始一直想着从最后一轮开始倒序处理，但怎么都无法保证分配的合理性。遍历到前面的轮次可能会不满足。</p>
+<p>​ 正确思路如下，先根据第一轮败者完善答案的一半。下标从 <span
+class="math inline">\(0\)</span> 开始的话第 <span
+class="math inline">\(1\)</span> 轮比赛的第 <span
+class="math inline">\(i\)</span> 场败者，可以对应第 <span
+class="math inline">\(i\times 2\)</span> 名选手。</p>
+<p>​ 第 <span class="math inline">\(i\)</span> 轮比赛的第 <span
+class="math inline">\(j\)</span> 场的<strong>败者</strong>其可能与第
+<span class="math inline">\(i -1\)</span> 轮比赛的第 <span
+class="math inline">\(j \times 2\)</span> 和 <span
+class="math inline">\(j\times 2+1\)</span>
+的<strong>胜者</strong>比赛。如果其能力值比两者都小的话，没有答案。否则跟任意一个能力值比它小的即可，可以思考一下正确性。</p>
+<p>​
+为了实现构造还要建立一个数组，记录该败者该放在哪个位置，详细可见代码。</p>
+<h2 id="代码">代码</h2>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="comment">// #define int long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&#x27;\n&#x27;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> debug(x) cout &lt;&lt; #x &lt;&lt; <span class="string">&quot; = &quot;</span> &lt;&lt; x &lt;&lt; endl</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> debug2(x,y) cout &lt;&lt; #x &lt;&lt; <span class="string">&quot; = &quot;</span> &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; #y &lt;&lt; <span class="string">&quot; = &quot;</span>&lt;&lt; y &lt;&lt; endl</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> LL;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> uLL;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt; pii;</span><br><span class="line"><span class="type">const</span> <span class="type">double</span> eps = <span class="number">1e-9</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mod = <span class="number">998244353</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">131080</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">    cin &gt;&gt; k;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">l</span>(k), <span class="built_in">nxt</span>(k);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">        <span class="type">int</span> n = (<span class="number">1</span> &lt;&lt; (k - i - <span class="number">1</span>));</span><br><span class="line">        l[i].<span class="built_in">resize</span>(n);</span><br><span class="line">        nxt[i].<span class="built_in">resize</span>(n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            cin &gt;&gt; l[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> w;</span><br><span class="line">    cin &gt;&gt; w;</span><br><span class="line">    <span class="keyword">if</span>(l[k - <span class="number">1</span>][<span class="number">0</span>] &gt; w) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No Solution\n&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ans</span><span class="params">(<span class="number">1</span> &lt;&lt; k)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>)); i++) &#123;</span><br><span class="line">        ans[i &lt;&lt; <span class="number">1</span>] = l[<span class="number">0</span>][i];</span><br><span class="line">        nxt[<span class="number">0</span>][i] = (i &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; (<span class="number">1</span> &lt;&lt; (k - i - <span class="number">1</span>)); j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(l[i][j] &lt; l[i - <span class="number">1</span>][j * <span class="number">2</span>] &amp;&amp; l[i][j] &lt; l[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]) &#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;No Solution\n&quot;</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> maxl = <span class="built_in">max</span>(&#123;l[i][j], l[i - <span class="number">1</span>][j * <span class="number">2</span>], l[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]&#125;);</span><br><span class="line">            <span class="keyword">if</span>(l[i][j] &gt;= l[i - <span class="number">1</span>][j * <span class="number">2</span>]) &#123;</span><br><span class="line">                ans[nxt[i - <span class="number">1</span>][j * <span class="number">2</span>]] = l[i][j];</span><br><span class="line">                nxt[i][j] = nxt[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                ans[nxt[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]] = l[i][j];</span><br><span class="line">                nxt[i][j] = nxt[i - <span class="number">1</span>][j * <span class="number">2</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            l[i][j] = maxl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// debug(nxt[k - 1][0]);</span></span><br><span class="line">    ans[nxt[k - <span class="number">1</span>][<span class="number">0</span>]] = w;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span> &lt;&lt; k); i++)</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; <span class="string">&quot; \n&quot;</span>[i == (<span class="number">1</span> &lt;&lt; k) - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// #define sunset</span></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>)-&gt;<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    </span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> sunset</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;in.txt&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;out.txt&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span>(T--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法竞赛</category>
+        <category>思维题</category>
+      </categories>
+  </entry>
+  <entry>
     <title>F-命运的抉择_2024牛客寒假算法基础集训营6</title>
     <url>/2024/02/25/F-%E5%91%BD%E8%BF%90%E7%9A%84%E6%8A%89%E6%8B%A9-2024%E7%89%9B%E5%AE%A2%E5%AF%92%E5%81%87%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%E9%9B%86%E8%AE%AD%E8%90%A56/</url>
     <content><![CDATA[<h2 id="题目链接">题目链接</h2>
@@ -31,45 +62,14 @@ class="math inline">\(c\)</span>。</p>
       <categories>
         <category>算法竞赛</category>
         <category>数论</category>
-        <category>数据结构</category>
         <category>筛法</category>
+        <category>数据结构</category>
         <category>并查集</category>
       </categories>
       <tags>
         <tag>筛法</tag>
         <tag>并查集</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>2023 天梯赛 L2-3 锦标赛</title>
-    <url>/2024/02/29/2023%E5%A4%A9%E6%A2%AF%E8%B5%9BL2-3%E9%94%A6%E6%A0%87%E8%B5%9B/</url>
-    <content><![CDATA[<h2 id="题目链接">题目链接</h2>
-<p><a
-href="https://pintia.cn/problem-sets/994805046380707840/exam/problems/1649748772841508874?type=7&amp;page=1">L2-047
-锦标赛 - 团体程序设计天梯赛-练习集 (pintia.cn)</a></p>
-<h2 id="思路">思路</h2>
-<p>​
-一开始一直想着从最后一轮开始倒序处理，但怎么都无法保证分配的合理性。遍历到前面的轮次可能会不满足。</p>
-<p>​ 正确思路如下，先根据第一轮败者完善答案的一半。下标从 <span
-class="math inline">\(0\)</span> 开始的话第 <span
-class="math inline">\(1\)</span> 轮比赛的第 <span
-class="math inline">\(i\)</span> 场败者，可以对应第 <span
-class="math inline">\(i\times 2\)</span> 名选手。</p>
-<p>​ 第 <span class="math inline">\(i\)</span> 轮比赛的第 <span
-class="math inline">\(j\)</span> 场的<strong>败者</strong>其可能与第
-<span class="math inline">\(i -1\)</span> 轮比赛的第 <span
-class="math inline">\(j \times 2\)</span> 和 <span
-class="math inline">\(j\times 2+1\)</span>
-的<strong>胜者</strong>比赛。如果其能力值比两者都小的话，没有答案。否则跟任意一个能力值比它小的即可，可以思考一下正确性。</p>
-<p>​
-为了实现构造还要建立一个数组，记录该败者该放在哪个位置，详细可见代码。</p>
-<h2 id="代码">代码</h2>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="comment">// #define int long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&#x27;\n&#x27;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> debug(x) cout &lt;&lt; #x &lt;&lt; <span class="string">&quot; = &quot;</span> &lt;&lt; x &lt;&lt; endl</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> debug2(x,y) cout &lt;&lt; #x &lt;&lt; <span class="string">&quot; = &quot;</span> &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; #y &lt;&lt; <span class="string">&quot; = &quot;</span>&lt;&lt; y &lt;&lt; endl</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> LL;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> uLL;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt; pii;</span><br><span class="line"><span class="type">const</span> <span class="type">double</span> eps = <span class="number">1e-9</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mod = <span class="number">998244353</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">131080</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">    cin &gt;&gt; k;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">l</span>(k), <span class="built_in">nxt</span>(k);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">        <span class="type">int</span> n = (<span class="number">1</span> &lt;&lt; (k - i - <span class="number">1</span>));</span><br><span class="line">        l[i].<span class="built_in">resize</span>(n);</span><br><span class="line">        nxt[i].<span class="built_in">resize</span>(n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            cin &gt;&gt; l[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> w;</span><br><span class="line">    cin &gt;&gt; w;</span><br><span class="line">    <span class="keyword">if</span>(l[k - <span class="number">1</span>][<span class="number">0</span>] &gt; w) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No Solution\n&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ans</span><span class="params">(<span class="number">1</span> &lt;&lt; k)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>)); i++) &#123;</span><br><span class="line">        ans[i &lt;&lt; <span class="number">1</span>] = l[<span class="number">0</span>][i];</span><br><span class="line">        nxt[<span class="number">0</span>][i] = (i &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; (<span class="number">1</span> &lt;&lt; (k - i - <span class="number">1</span>)); j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(l[i][j] &lt; l[i - <span class="number">1</span>][j * <span class="number">2</span>] &amp;&amp; l[i][j] &lt; l[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]) &#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;No Solution\n&quot;</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> maxl = <span class="built_in">max</span>(&#123;l[i][j], l[i - <span class="number">1</span>][j * <span class="number">2</span>], l[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]&#125;);</span><br><span class="line">            <span class="keyword">if</span>(l[i][j] &gt;= l[i - <span class="number">1</span>][j * <span class="number">2</span>]) &#123;</span><br><span class="line">                ans[nxt[i - <span class="number">1</span>][j * <span class="number">2</span>]] = l[i][j];</span><br><span class="line">                nxt[i][j] = nxt[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                ans[nxt[i - <span class="number">1</span>][j * <span class="number">2</span> + <span class="number">1</span>]] = l[i][j];</span><br><span class="line">                nxt[i][j] = nxt[i - <span class="number">1</span>][j * <span class="number">2</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            l[i][j] = maxl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// debug(nxt[k - 1][0]);</span></span><br><span class="line">    ans[nxt[k - <span class="number">1</span>][<span class="number">0</span>]] = w;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span> &lt;&lt; k); i++)</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; <span class="string">&quot; \n&quot;</span>[i == (<span class="number">1</span> &lt;&lt; k) - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// #define sunset</span></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>)-&gt;<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    </span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> sunset</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;in.txt&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;out.txt&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span>(T--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法竞赛</category>
-        <category>思维题</category>
-      </categories>
   </entry>
   <entry>
     <title>L3-032 关于深度优先搜索和逆序对的题应该不会很难吧这件事</title>
@@ -114,98 +114,16 @@ class="math inline">\(u\)</span>
       </categories>
   </entry>
   <entry>
-    <title>一些数论算法及证明</title>
-    <url>/2024/01/25/%E4%B8%80%E4%BA%9B%E6%95%B0%E8%AE%BA%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AF%81%E6%98%8E/</url>
-    <content><![CDATA[<h2 id="辗转相除法"><a href="#辗转相除法" class="headerlink" title="辗转相除法"></a>辗转相除法</h2><p><strong>等式 1</strong> 如果 $a\mid b$ 且 $b\mid a$，那么 $a&#x3D;b$ </p>
-<p><strong>等式 2</strong> 如果 $d\mid a$ 且 $d\mid b$ 那么 $d\mid(ax + by);x,y \in Z$</p>
-<p><strong>等式 3</strong> $a\bmod\ n &#x3D; a - n\left \lfloor\frac{a}{n}\right \rfloor;a\in Z,n\in N^{*}$</p>
-<p><strong>推论 1</strong> 对任意整数 $a$, $b$，如果 $d\mid a$ 且 $d\mid b$ 则 $d\mid\gcd(a, b)$</p>
-<p>如果我们想要获得结论 $\gcd(a,b) &#x3D; \gcd(b,a\bmod\ b)$</p>
-<p>那么我们只需要证明 $\gcd(a,b)\mid\gcd(b,a\bmod b)$ 且 $\gcd(b,a\bmod b)\mid\gcd(a,b)$ 就可以来证明它俩相等了。</p>
-<h3 id="证明-gcd-a-b-mid-gcd-b-a-bmod-b"><a href="#证明-gcd-a-b-mid-gcd-b-a-bmod-b" class="headerlink" title="证明 $\gcd(a,b)\mid\gcd(b,a\bmod b)$"></a>证明 $\gcd(a,b)\mid\gcd(b,a\bmod b)$</h3><blockquote>
-<p>设 $d &#x3D; \gcd(a, b)$<br>$\therefore d\mid a$ 且 $d\mid b$。<br>由 <strong>等式 3</strong> 可知：$a\pmod b &#x3D; a - qb,q &#x3D; \left \lfloor\frac{a}{b}\right \rfloor$ <br>$\therefore a\bmod\ b$ 是 a 与 b 的<strong>线性组合</strong> <br>由 <strong>等式 2</strong> 可知：$d\mid a\pmod b$ <br>$\because d\mid b$ 且 $d\mid a\pmod b$ <br>$\therefore$ 由 <strong>推论 1</strong> 可知 $d\mid\gcd(b, a\bmod\ b)$ <br><strong>等价结论：</strong> $\gcd(a, b)\mid\gcd(b, a\bmod\ b)$</p>
-</blockquote>
-<h3 id="证明-gcd-b-a-bmod-b-mid-gcd-a-b"><a href="#证明-gcd-b-a-bmod-b-mid-gcd-a-b" class="headerlink" title="证明 $\gcd(b,a\bmod\ b)\mid\gcd(a,b)$"></a>证明 $\gcd(b,a\bmod\ b)\mid\gcd(a,b)$</h3><blockquote>
-<p>设 $c &#x3D; \gcd(b, a\bmod\ b)$ <br>$\therefore c\mid b$ 且 $c\mid a\pmod b$ <br>$\because a &#x3D; qb + r,r &#x3D; a\bmod\ b,q &#x3D; \left \lfloor\frac{a}{b}\right \rfloor$ <br>$\therefore a$ 是 $b$ 和 $a\bmod\ b$ 的<strong>线性组合</strong> <br>由 <strong>等式 2</strong> 可知：$c\mid a$ <br>$\because c\mid a$ 且 $c\mid b$ <br>由 <strong>推论 1</strong> 可知：$c\mid\gcd(a, b)$ <br><strong>等价结论：</strong> $\gcd(b, a\bmod\ b)\mid\gcd(a, b)$</p>
-</blockquote>
-<h3 id="证明-gcd-a-b-gcd-b-a-bmod-b"><a href="#证明-gcd-a-b-gcd-b-a-bmod-b" class="headerlink" title="证明 $\gcd(a,b) &#x3D; \gcd(b, a\bmod b)$"></a>证明 $\gcd(a,b) &#x3D; \gcd(b, a\bmod b)$</h3><blockquote>
-<p>由 上述两个结论 可知：<br>$$<br>\begin{aligned}<br>\gcd(a, b)\mid\gcd(b, a\bmod\ b)\<br>\gcd(b, a\bmod\ b)\mid\gcd(a, b)<br>\end{aligned}<br>$$<br>由 <strong>等式 1</strong> 可知：$\gcd(a, b) &#x3D; \gcd(b, a\bmod\ b)$</p>
-</blockquote>
-<h2 id="扩展欧几里得算法"><a href="#扩展欧几里得算法" class="headerlink" title="扩展欧几里得算法"></a>扩展欧几里得算法</h2><p>求 $ax+by&#x3D;gcd(a,b)$</p>
-<p>设</p>
-<p>$$<br>\begin{aligned}<br>ax_1+by_1&amp;&#x3D;\gcd(a,b) \<br>bx_2+(a\bmod b)y_2&amp;&#x3D;\gcd(b,a\bmod b)<br>\end{aligned}<br>$$</p>
-<p>由欧几里得定理可知：$\gcd(a,b)&#x3D;\gcd(b,a\bmod b)$</p>
-<p>所以 $ax_1+by_1&#x3D;bx_2+(a\bmod b)y_2$</p>
-<p>又因为 $a\bmod b&#x3D;a-\lfloor\frac{a}{b}\rfloor\times b$</p>
-<p>所以<br>$$<br>ax_1+by_1&#x3D;bx_2+(a-\lfloor\frac{a}{b}\rfloor\times b)y_2<br>$$<br>$ax_1+by_1&#x3D;ay_2+bx_2-\lfloor\frac{a}{b}\rfloor\times by_2&#x3D;ay_2+b(x_2-\lfloor\frac{a}{b}\rfloor y_2)$</p>
-<p>$a,b$ 相同，所以 $x_1&#x3D;y_2,y_1&#x3D;x_2-\lfloor\frac{a}{b}\rfloor y_2$</p>
-<p>将 $x_2,y_2$ 不断代入递归求解直至 $\gcd$（最大公约数，下同）为 <code>0</code> 递归 <code>x=1,y=0</code> 回去求解。</p>
-<details class="note info no-icon"><summary><p>code</p>
-</summary>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!b) &#123;</span><br><span class="line">    x = <span class="number">1</span>;</span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> d = <span class="built_in">exgcd</span>(b, a % b, x, y);</span><br><span class="line">  <span class="type">int</span> t = x;</span><br><span class="line">  x = y;</span><br><span class="line">  y = t - (a / b) * y;</span><br><span class="line">  <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</details>
-
-<h2 id="同余方程"><a href="#同余方程" class="headerlink" title="同余方程"></a>同余方程</h2><p>求关于 $ x$ 的同余方程 $ a x \equiv 1 \pmod b$ 的最小正整数解。</p>
-<p>对于 $100%$ 的数据，$2\le a, b\le 2,000,000,000$。</p>
-<h3 id="solution"><a href="#solution" class="headerlink" title="solution"></a>solution</h3><p>$ax\bmod\ b&#x3D;1$ 实质是 $ax+by&#x3D;1$。 $y$ 是我们引入的某个整数，这里似乎是个负数。</p>
-<p>扩展欧几里得求 $ax+by&#x3D;\gcd(a,b)$，所以这里 $\gcd(a,b)&#x3D;1$，即 $a$，$b$ 互质。所以 $a$ 有模 $b$ 下的乘法逆元的条件为 $a$，$b$ 互质。</p>
-<p>我们将要求出来的 $x$， $y$ 仅仅保证满足 $ax+by&#x3D;1$，而 $x$ 不一定是最小正整数解。有可能太大，也有可能是负数。$x$ 批量的减去或加上 $b$，能保证 $ax+by&#x3D;1$。因为：<br>$$<br>a(x+kb)+b(y-ka)&#x3D;1<br>$$<br>这里我们可以这么写</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">x = (x % b + b) % b</span><br></pre></td></tr></table></figure>
-
-<h2 id="二元一次不定方程"><a href="#二元一次不定方程" class="headerlink" title="二元一次不定方程"></a>二元一次不定方程</h2><p><a href="https://www.luogu.com.cn/problem/P5656">P5656 【模板】二元一次不定方程 (exgcd) - 洛谷 | 计算机科学教育新生态 (luogu.com.cn)</a></p>
-<p>$$<br>ax+by&#x3D;c<br>$$</p>
-<p>$\gcd(a,b)\mid(ax+by)$，若 $c$ 不是 $\gcd(a,b)$ 的倍数直接无解</p>
-<p>记 $ax+by&#x3D;\gcd(a,b)$ 的一组特解为 $x_0$，$y_0$。则有:</p>
-<p>$$<br>\begin{aligned}<br>ax_0+by_0&#x3D;\gcd(a,b) \<br>a\frac{x_0c}{\gcd(a,b)}+b\frac{y_0c}{\gcd(a,b)}&#x3D;c<br>\end{aligned}<br>$$</p>
-<p>故我们已经找到原方程的一组整数特解，记为 $x_1$ 和 $y_1$</p>
-<p>$$<br>\begin{aligned}<br>x_1&#x3D;\frac{x_0c}{\gcd(a,b)}, \quad y_1&#x3D;\frac{y_0c}{\gcd(a,b)}<br>\end{aligned}<br>$$</p>
-<p>那么我们考虑构造原方程整数通解形式</p>
-<p>我们设任意 $d\in Q$，那么必有<br>$$<br>a(x_1+db)+b(y_1-da)&#x3D;c<br>$$<br>显然对于最小的 $db$，$da$，$d&#x3D;\frac{1}{\gcd(a,b)}$</p>
-<p>然后像上面一样开始乱搞</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> d = <span class="built_in">exgcd</span>(a, b, x, y);</span><br><span class="line"><span class="keyword">if</span>(c % d) &#123;</span><br><span class="line">    cout &lt;&lt; <span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">x = c * x / d, y = c * y / d;</span><br><span class="line"><span class="type">int</span> dx = b / d, dy = a / d;</span><br><span class="line"><span class="type">int</span> minx = (x % dx + dx) % dx;</span><br><span class="line"><span class="keyword">if</span>(minx == <span class="number">0</span>) minx = dx;</span><br><span class="line"><span class="type">int</span> maxy = (c - a * minx) / b;</span><br><span class="line"><span class="type">int</span> miny = (y % dy + dy) % dy;</span><br><span class="line"><span class="keyword">if</span>(miny == <span class="number">0</span>) miny = dy;</span><br><span class="line"><span class="type">int</span> maxx = (c - b * miny) / a;</span><br></pre></td></tr></table></figure>
-
-<h2 id="中国剩余定理"><a href="#中国剩余定理" class="headerlink" title="中国剩余定理"></a>中国剩余定理</h2><h3 id="模数不互质的情况"><a href="#模数不互质的情况" class="headerlink" title="模数不互质的情况"></a>模数不互质的情况</h3><p>设两个方程分别是 $x\equiv a_1\pmod m_1,x\equiv a_2\pmod m_2$</p>
-<p>将它们转化为不定方程：$x&#x3D;m_1p+a_1&#x3D;m_2q+a_2$，其中 $p, q$ 是整数，则有 $m_1p-m_2q&#x3D;a_2-a_1$。</p>
-<p>由裴属定理，当 $a_2-a_1$ 不能被 $\gcd(m_1,m_2)$ 整除时，无解；</p>
-<p>其他情况下，可以通过扩展欧几里得算法解出来一组可行解 $(p,q)$；</p>
-<p>则原来的两方程组的模方程组的解为 $x\equiv b\pmod M$，其中 $b&#x3D;m_1p+a_1$, $M&#x3D;\mathrm{lcm}(m_1,m_2)$。</p>
-<h2 id="Lucas-定理"><a href="#Lucas-定理" class="headerlink" title="Lucas 定理"></a>Lucas 定理</h2><p>对于质数 $p$，有</p>
-<p>$$<br>\binom{n}{m}\bmod p&#x3D;\binom{\lfloor\frac{n}{p}\rfloor}{\lfloor\frac{m}{p}\rfloor}\cdot\binom{n\bmod p}{m\bmod p}\bmod p<br>$$</p>
-<p>观察上述表达式，可知 $n\bmod p$ 和 $m\bmod p$ 一定是小于 $p$ 的数，可以直接求解，$\displaystyle\binom{\left\lfloor\frac{n}{p}\right\rfloor}{\left\lfloor\frac{m}{p}\right\rfloor}$ 可以继续用 Lucas 定理求解。这也就要求 $p$ 的范围不能够太大，一般在 $10^5$ 左右。边界条件：当 $m&#x3D;0$ 的时候，返回 $1$。</p>
-<h3 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h3><p>考虑 $\displaystyle\binom{p}{n} \bmod p$ 的取值，注意到 $\displaystyle\binom{p}{n} &#x3D; \frac{p!}{n!(p-n)!}$，分子的质因子分解中 $p$ 的次数恰好为 $1$，因此只有当 $n &#x3D; 0$ 或 $n &#x3D; p$ 的时候 $n!(p-n)!$ 的质因子分解中含有 $p$，因此 $\displaystyle\binom{p}{n} \bmod p &#x3D; [n &#x3D; 0 \vee n &#x3D; p]$。进而我们可以得出:</p>
-<p>$$<br>\begin{align} (a+b)^p &amp;&#x3D; \sum_{n&#x3D;0}^p \binom pn a^n b^{p-n}\ &amp;\equiv \sum_{n&#x3D;0}^p [n&#x3D;0\vee n&#x3D;p] a^n b^{p-n}\ &amp;\equiv a^p + b^p \pmod p \end{align}<br>$$</p>
-<p>注意过程中没有用到费马小定理，因此这一推导不仅适用于整数，亦适用于多项式。因此我们可以考虑二项式 $f^p(x)&#x3D;(ax^n + bx^m)^p \bmod p$ 的结果</p>
-<p>$$<br>\begin{align} (ax^n + bx^m)^p &amp;\equiv a^p x^{pn} + b^p x^{pm} \ &amp;\equiv ax^{pn} + bx^{pm}\ &amp;\equiv f(x^p) \end{align}<br>$$</p>
-<blockquote>
-<p>note: $a^{p-1}\equiv 1\pmod{p}$</p>
-</blockquote>
-<p>考虑二项式 $(1+x)^n \bmod p$，那么 $\displaystyle\binom n m$ 就是求其在 $x^m$ 次项的取值。使用上述引理，我们可以得到</p>
-<p>$$<br>\begin{align} (1+x)^n &amp;\equiv (1+x)^{p\lfloor n&#x2F;p \rfloor} (1+x)^{n\bmod p}\ &amp;\equiv (1+x^p)^{\lfloor n&#x2F;p \rfloor} (1+x)^{n\bmod p} \end{align}<br>$$</p>
-<p>注意前者只有在 $p$ 的倍数位置才有取值，而后者最高次项为 $n\bmod p \le p-1$，因此这两部分的卷积在任何一个位置只有最多一种方式贡献取值，即在前者部分取 $p$ 的倍数次项，后者部分取剩余项，即 </p>
-<p>$$<br>\displaystyle\binom{n}{m}\bmod p &#x3D; \binom{\left\lfloor n&#x2F;p \right\rfloor}{\left\lfloor m&#x2F;p\right\rfloor}\cdot\binom{n\bmod p}{m\bmod p}\bmod p<br>$$</p>
-<h2 id="扩展-Lucas定理"><a href="#扩展-Lucas定理" class="headerlink" title="扩展 Lucas定理"></a>扩展 Lucas定理</h2><p>求</p>
-<p>$$<br>{\mathrm{C}}_n^m \bmod{p}<br>$$</p>
-<p>其中 $p\le 10^6$，<strong>不保证</strong> $p$ 为质数。</p>
-<h3 id="证明-1"><a href="#证明-1" class="headerlink" title="证明"></a>证明</h3><p><a href="https://www.luogu.com.cn/blog/wohaocaia/solution-p4720">扩展Lucas定理 - HorizonWind 的洛谷博客</a></p>
-<h2 id="莫比乌斯反演"><a href="#莫比乌斯反演" class="headerlink" title="莫比乌斯反演"></a>莫比乌斯反演</h2><p>若 $f$ 是算数函数，$F$ 为 $f$ 的和函数，对任意正整数 $n$，满足 $F(n)&#x3D;\sum_{d\mid n}f(d)$，则有 $f(n)&#x3D;\sum_{d\mid n}\mu(d)F(\frac{n}{d})$</p>
-<p>证明：</p>
-<p>$i\mid\frac{n}{d}\iff id\mid n\iff d\mid \frac{n}{i}$</p>
-<p>$$<br>\begin{align}<br>\sum_{d\mid n}\mu(d)F(\frac{n}{d})&amp;&#x3D;\sum_{d\mid n}\mu(d)\sum_{i\mid\frac{n}{d}}f(i) \<br>&amp;&#x3D;\sum_{i\mid n}f(i)\sum_{d\mid\frac{n}{i}}\mu(d)<br>\end{align}<br>$$</p>
-<p>当 $\frac{n}{i}$ 为 $1$ 的时候，$\sum_{d\mid\frac{n}{i}}\mu(d)&#x3D;1$，其它均为 $0$。</p>
-<p>所以</p>
-<p>$$<br>\sum_{d\mid n}\mu(d)F(\frac{n}{d})&#x3D;f(n)<br>$$</p>
-<hr>
-<p>若 $F(n)&#x3D;\sum_{n\mid d}f(d)$，则 $f(n)&#x3D;\sum_{n\mid d}\mu(\frac{d}{n})F(d)$</p>
-<p>证明：<br>$$<br>\sum_{n\mid d}\mu(\frac{d}{n})F(d)&#x3D;\sum_{n\mid d}\mu(\frac{d}{n})\sum_{d\mid i}f(i)<br>$$<br>$n\mid d$，设 $d’&#x3D;\frac{d}{n}$，$d&#x3D;d’n$</p>
-<p>$d\mid i$，则 $d’n\mid i$，即 $d’\mid \frac{i}{n}$<br>$$<br>\sum_{n\mid d}\mu(\frac{d}{n})\sum_{d\mid i}f(i)&#x3D;\sum_{n\mid i}f(i)\sum_{d’\mid\frac{i}{n}}\mu(d’)<br>$$<br>当 $\frac{i}{n}$ 为 $1$，即 $i&#x3D;n$ 时，$\sum_{d’\mid\frac{i}{n}}\mu(d’)&#x3D;1$，其余均为 $0$</p>
-<p>所以</p>
-<p>$$<br>\sum_{n\mid d}\mu(\frac{d}{n})F(d)&#x3D;f(n)<br>$$</p>
-<h3 id="反演结论"><a href="#反演结论" class="headerlink" title="反演结论"></a>反演结论</h3><p>$$<br>d(ij)&#x3D;\sum_{x\mid i}\sum_{y\mid j}[\gcd(x,y)&#x3D;1]<br>$$</p>
+    <title>《莫失莫忘》随笔</title>
+    <url>/2026/01/29/%E3%80%8A%E8%8E%AB%E5%A4%B1%E8%8E%AB%E5%BF%98%E3%80%8B%E9%9A%8F%E7%AC%94/</url>
+    <content><![CDATA[<p>石黑一雄虽从小在英国长大，但这篇作品，尤其后三章真相的揭露，字里行间流露着日本的“物哀”美学，一种无法言说的悲伤，无可慰藉的苦痛。小说中的人物只能在既定框架下面对早已注定的命运，没有反抗，甚至连逃避都没有，不免让人“恼火”。可事实上现实不也如此，在社会这个大浪潮下，你又能改变些什么呢？有时我在想，上帝宏观不掷骰子，微观掷骰子。你的努力只是微观层面上的扰动，改变不了整体宏观层面上早已注定的命运，甚至连你的努力都是确定性的。这么一想不免悲从中来，但正因如此，我拼了命也要改变些什么，留下些什么……</p>
 ]]></content>
       <categories>
-        <category>算法竞赛</category>
-        <category>数论</category>
+        <category>随笔</category>
       </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
   <entry>
     <title>根号分治学习笔记</title>
@@ -391,15 +309,325 @@ class="math inline">\(45\)</span> 比差距不大，只分成两块就可以通�
       </tags>
   </entry>
   <entry>
-    <title>《莫失莫忘》随笔</title>
-    <url>/2026/01/29/%E3%80%8A%E8%8E%AB%E5%A4%B1%E8%8E%AB%E5%BF%98%E3%80%8B%E9%9A%8F%E7%AC%94/</url>
-    <content><![CDATA[<p>石黑一雄虽从小在英国长大，但这篇作品，尤其后三章真相的揭露，字里行间流露着日本的“物哀”美学，一种无法言说的悲伤，无可慰藉的苦痛。小说中的人物只能在既定框架下面对早已注定的命运，没有反抗，甚至连逃避都没有，不免让人“恼火”。可事实上现实不也如此，在社会这个大浪潮下，你又能改变些什么呢？有时我在想，上帝宏观不掷骰子，微观掷骰子。你的努力只是微观层面上的扰动，改变不了整体宏观层面上早已注定的命运，甚至连你的努力都是确定性的。这么一想不免悲从中来，但正因如此，我拼了命也要改变些什么，留下些什么……</p>
+    <title>一些数论算法及证明</title>
+    <url>/2024/01/25/%E4%B8%80%E4%BA%9B%E6%95%B0%E8%AE%BA%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AF%81%E6%98%8E/</url>
+    <content><![CDATA[<h2 id="辗转相除法">辗转相除法</h2>
+<p><strong>等式 1</strong> 如果 <span class="math inline">\(a\mid
+b\)</span> 且 <span class="math inline">\(b\mid a\)</span>，那么 <span
+class="math inline">\(a=b\)</span></p>
+<p><strong>等式 2</strong> 如果 <span class="math inline">\(d\mid
+a\)</span> 且 <span class="math inline">\(d\mid b\)</span> 那么 <span
+class="math inline">\(d\mid(ax + by);x,y \in Z\)</span></p>
+<p><strong>等式 3</strong> <span class="math inline">\(a\bmod\ n = a -
+n\left \lfloor\frac{a}{n}\right \rfloor;a\in Z,n\in N^{*}\)</span></p>
+<p><strong>推论 1</strong> 对任意整数 <span
+class="math inline">\(a\)</span>, <span
+class="math inline">\(b\)</span>，如果 <span class="math inline">\(d\mid
+a\)</span> 且 <span class="math inline">\(d\mid b\)</span> 则 <span
+class="math inline">\(d\mid\gcd(a, b)\)</span></p>
+<p>如果我们想要获得结论 <span class="math inline">\(\gcd(a,b) =
+\gcd(b,a\bmod\ b)\)</span></p>
+<p>那么我们只需要证明 <span
+class="math inline">\(\gcd(a,b)\mid\gcd(b,a\bmod b)\)</span> 且 <span
+class="math inline">\(\gcd(b,a\bmod b)\mid\gcd(a,b)\)</span>
+就可以来证明它俩相等了。</p>
+<h3 id="证明-gcdabmidgcdbabmod-b">证明 <span
+class="math inline">\(\gcd(a,b)\mid\gcd(b,a\bmod b)\)</span></h3>
+<blockquote>
+<p>设 <span class="math inline">\(d = \gcd(a, b)\)</span> <span
+class="math inline">\(\therefore d\mid a\)</span> 且 <span
+class="math inline">\(d\mid b\)</span>。<br />
+由 <strong>等式 3</strong> 可知：<span class="math inline">\(a\pmod b =
+a - qb,q = \left \lfloor\frac{a}{b}\right \rfloor\)</span><br />
+<span class="math inline">\(\therefore a\bmod\ b\)</span> 是 a 与 b
+的<strong>线性组合</strong><br />
+由 <strong>等式 2</strong> 可知：<span class="math inline">\(d\mid
+a\pmod b\)</span><br />
+<span class="math inline">\(\because d\mid b\)</span> 且 <span
+class="math inline">\(d\mid a\pmod b\)</span><br />
+<span class="math inline">\(\therefore\)</span> 由 <strong>推论
+1</strong> 可知 <span class="math inline">\(d\mid\gcd(b, a\bmod\
+b)\)</span><br />
+<strong>等价结论：</strong> <span class="math inline">\(\gcd(a,
+b)\mid\gcd(b, a\bmod\ b)\)</span></p>
+</blockquote>
+<h3 id="证明-gcdbabmod-bmidgcdab">证明 <span
+class="math inline">\(\gcd(b,a\bmod\ b)\mid\gcd(a,b)\)</span></h3>
+<blockquote>
+<p>设 <span class="math inline">\(c = \gcd(b, a\bmod\ b)\)</span><br />
+<span class="math inline">\(\therefore c\mid b\)</span> 且 <span
+class="math inline">\(c\mid a\pmod b\)</span><br />
+<span class="math inline">\(\because a = qb + r,r = a\bmod\ b,q = \left
+\lfloor\frac{a}{b}\right \rfloor\)</span><br />
+<span class="math inline">\(\therefore a\)</span> 是 <span
+class="math inline">\(b\)</span> 和 <span class="math inline">\(a\bmod\
+b\)</span> 的<strong>线性组合</strong><br />
+由 <strong>等式 2</strong> 可知：<span class="math inline">\(c\mid
+a\)</span><br />
+<span class="math inline">\(\because c\mid a\)</span> 且 <span
+class="math inline">\(c\mid b\)</span><br />
+由 <strong>推论 1</strong> 可知：<span
+class="math inline">\(c\mid\gcd(a, b)\)</span><br />
+<strong>等价结论：</strong> <span class="math inline">\(\gcd(b, a\bmod\
+b)\mid\gcd(a, b)\)</span></p>
+</blockquote>
+<h3 id="证明-gcdab-gcdb-abmod-b">证明 <span
+class="math inline">\(\gcd(a,b) = \gcd(b, a\bmod b)\)</span></h3>
+<blockquote>
+<p>由 上述两个结论 可知： <span class="math display">\[
+\begin{aligned}
+\gcd(a, b)\mid\gcd(b, a\bmod\ b)\\
+\gcd(b, a\bmod\ b)\mid\gcd(a, b)
+\end{aligned}
+\]</span> 由 <strong>等式 1</strong> 可知：<span
+class="math inline">\(\gcd(a, b) = \gcd(b, a\bmod\ b)\)</span></p>
+</blockquote>
+<h2 id="扩展欧几里得算法">扩展欧几里得算法</h2>
+<p>求 <span class="math inline">\(ax+by=gcd(a,b)\)</span></p>
+<p>设</p>
+<p><span class="math display">\[
+\begin{aligned}
+ax_1+by_1&amp;=\gcd(a,b) \\
+bx_2+(a\bmod b)y_2&amp;=\gcd(b,a\bmod b)
+\end{aligned}
+\]</span></p>
+<p>由欧几里得定理可知：<span
+class="math inline">\(\gcd(a,b)=\gcd(b,a\bmod b)\)</span></p>
+<p>所以 <span class="math inline">\(ax_1+by_1=bx_2+(a\bmod
+b)y_2\)</span></p>
+<p>又因为 <span class="math inline">\(a\bmod
+b=a-\lfloor\frac{a}{b}\rfloor\times b\)</span></p>
+<p>所以 <span class="math display">\[
+ax_1+by_1=bx_2+(a-\lfloor\frac{a}{b}\rfloor\times b)y_2
+\]</span> <span
+class="math inline">\(ax_1+by_1=ay_2+bx_2-\lfloor\frac{a}{b}\rfloor\times
+by_2=ay_2+b(x_2-\lfloor\frac{a}{b}\rfloor y_2)\)</span></p>
+<p><span class="math inline">\(a,b\)</span> 相同，所以 <span
+class="math inline">\(x_1=y_2,y_1=x_2-\lfloor\frac{a}{b}\rfloor
+y_2\)</span></p>
+<p>将 <span class="math inline">\(x_2,y_2\)</span> 不断代入递归求解直至
+<span class="math inline">\(\gcd\)</span>（最大公约数，下同）为
+<code>0</code> 递归 <code>x=1,y=0</code> 回去求解。</p>
+<details class="note info no-icon"><summary><p>code</p>
+</summary>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!b) &#123;</span><br><span class="line">    x = <span class="number">1</span>;</span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> d = <span class="built_in">exgcd</span>(b, a % b, x, y);</span><br><span class="line">  <span class="type">int</span> t = x;</span><br><span class="line">  x = y;</span><br><span class="line">  y = t - (a / b) * y;</span><br><span class="line">  <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</details>
+<h2 id="同余方程">同余方程</h2>
+<p>求关于 $ x$ 的同余方程 $ a x b$ 的最小正整数解。</p>
+<p>对于 <span class="math inline">\(100\%\)</span> 的数据，<span
+class="math inline">\(2\le a, b\le 2,000,000,000\)</span>。</p>
+<h3 id="solution">solution</h3>
+<p><span class="math inline">\(ax\bmod\ b=1\)</span> 实质是 <span
+class="math inline">\(ax+by=1\)</span>。 <span
+class="math inline">\(y\)</span>
+是我们引入的某个整数，这里似乎是个负数。</p>
+<p>扩展欧几里得求 <span
+class="math inline">\(ax+by=\gcd(a,b)\)</span>，所以这里 <span
+class="math inline">\(\gcd(a,b)=1\)</span>，即 <span
+class="math inline">\(a\)</span>，<span class="math inline">\(b\)</span>
+互质。所以 <span class="math inline">\(a\)</span> 有模 <span
+class="math inline">\(b\)</span> 下的乘法逆元的条件为 <span
+class="math inline">\(a\)</span>，<span class="math inline">\(b\)</span>
+互质。</p>
+<p>我们将要求出来的 <span class="math inline">\(x\)</span>， <span
+class="math inline">\(y\)</span> 仅仅保证满足 <span
+class="math inline">\(ax+by=1\)</span>，而 <span
+class="math inline">\(x\)</span>
+不一定是最小正整数解。有可能太大，也有可能是负数。<span
+class="math inline">\(x\)</span> 批量的减去或加上 <span
+class="math inline">\(b\)</span>，能保证 <span
+class="math inline">\(ax+by=1\)</span>。因为： <span
+class="math display">\[
+a(x+kb)+b(y-ka)=1
+\]</span> 这里我们可以这么写</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">x = (x % b + b) % b</span><br></pre></td></tr></table></figure>
+<h2 id="二元一次不定方程">二元一次不定方程</h2>
+<p><a href="https://www.luogu.com.cn/problem/P5656">P5656
+【模板】二元一次不定方程 (exgcd) - 洛谷 | 计算机科学教育新生态
+(luogu.com.cn)</a></p>
+<p><span class="math display">\[
+ax+by=c
+\]</span></p>
+<p><span class="math inline">\(\gcd(a,b)\mid(ax+by)\)</span>，若 <span
+class="math inline">\(c\)</span> 不是 <span
+class="math inline">\(\gcd(a,b)\)</span> 的倍数直接无解</p>
+<p>记 <span class="math inline">\(ax+by=\gcd(a,b)\)</span> 的一组特解为
+<span class="math inline">\(x_0\)</span>，<span
+class="math inline">\(y_0\)</span>。则有:</p>
+<p><span class="math display">\[
+\begin{aligned}
+ax_0+by_0=\gcd(a,b) \\
+a\frac{x_0c}{\gcd(a,b)}+b\frac{y_0c}{\gcd(a,b)}=c
+\end{aligned}
+\]</span></p>
+<p>故我们已经找到原方程的一组整数特解，记为 <span
+class="math inline">\(x_1\)</span> 和 <span
+class="math inline">\(y_1\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+x_1=\frac{x_0c}{\gcd(a,b)}, \quad y_1=\frac{y_0c}{\gcd(a,b)}
+\end{aligned}
+\]</span></p>
+<p>那么我们考虑构造原方程整数通解形式</p>
+<p>我们设任意 <span class="math inline">\(d\in Q\)</span>，那么必有
+<span class="math display">\[
+a(x_1+db)+b(y_1-da)=c
+\]</span> 显然对于最小的 <span class="math inline">\(db\)</span>，<span
+class="math inline">\(da\)</span>，<span
+class="math inline">\(d=\frac{1}{\gcd(a,b)}\)</span></p>
+<p>然后像上面一样开始乱搞</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> d = <span class="built_in">exgcd</span>(a, b, x, y);</span><br><span class="line"><span class="keyword">if</span>(c % d) &#123;</span><br><span class="line">    cout &lt;&lt; <span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">x = c * x / d, y = c * y / d;</span><br><span class="line"><span class="type">int</span> dx = b / d, dy = a / d;</span><br><span class="line"><span class="type">int</span> minx = (x % dx + dx) % dx;</span><br><span class="line"><span class="keyword">if</span>(minx == <span class="number">0</span>) minx = dx;</span><br><span class="line"><span class="type">int</span> maxy = (c - a * minx) / b;</span><br><span class="line"><span class="type">int</span> miny = (y % dy + dy) % dy;</span><br><span class="line"><span class="keyword">if</span>(miny == <span class="number">0</span>) miny = dy;</span><br><span class="line"><span class="type">int</span> maxx = (c - b * miny) / a;</span><br></pre></td></tr></table></figure>
+<h2 id="中国剩余定理">中国剩余定理</h2>
+<h3 id="模数不互质的情况">模数不互质的情况</h3>
+<p>设两个方程分别是 <span class="math inline">\(x\equiv a_1\pmod
+m_1,x\equiv a_2\pmod m_2\)</span></p>
+<p>将它们转化为不定方程：<span
+class="math inline">\(x=m_1p+a_1=m_2q+a_2\)</span>，其中 <span
+class="math inline">\(p, q\)</span> 是整数，则有 <span
+class="math inline">\(m_1p-m_2q=a_2-a_1\)</span>。</p>
+<p>由裴属定理，当 <span class="math inline">\(a_2-a_1\)</span> 不能被
+<span class="math inline">\(\gcd(m_1,m_2)\)</span> 整除时，无解；</p>
+<p>其他情况下，可以通过扩展欧几里得算法解出来一组可行解 <span
+class="math inline">\((p,q)\)</span>；</p>
+<p>则原来的两方程组的模方程组的解为 <span class="math inline">\(x\equiv
+b\pmod M\)</span>，其中 <span class="math inline">\(b=m_1p+a_1\)</span>,
+<span class="math inline">\(M=\mathrm{lcm}(m_1,m_2)\)</span>。</p>
+<h2 id="lucas-定理">Lucas 定理</h2>
+<p>对于质数 <span class="math inline">\(p\)</span>，有</p>
+<p><span class="math display">\[
+\binom{n}{m}\bmod
+p=\binom{\lfloor\frac{n}{p}\rfloor}{\lfloor\frac{m}{p}\rfloor}\cdot\binom{n\bmod
+p}{m\bmod p}\bmod p
+\]</span></p>
+<p>观察上述表达式，可知 <span class="math inline">\(n\bmod p\)</span> 和
+<span class="math inline">\(m\bmod p\)</span> 一定是小于 <span
+class="math inline">\(p\)</span> 的数，可以直接求解，<span
+class="math inline">\(\displaystyle\binom{\left\lfloor\frac{n}{p}\right\rfloor}{\left\lfloor\frac{m}{p}\right\rfloor}\)</span>
+可以继续用 Lucas 定理求解。这也就要求 <span
+class="math inline">\(p\)</span> 的范围不能够太大，一般在 <span
+class="math inline">\(10^5\)</span> 左右。边界条件：当 <span
+class="math inline">\(m=0\)</span> 的时候，返回 <span
+class="math inline">\(1\)</span>。</p>
+<h3 id="证明">证明</h3>
+<p>考虑 <span class="math inline">\(\displaystyle\binom{p}{n} \bmod
+p\)</span> 的取值，注意到 <span
+class="math inline">\(\displaystyle\binom{p}{n} =
+\frac{p!}{n!(p-n)!}\)</span>，分子的质因子分解中 <span
+class="math inline">\(p\)</span> 的次数恰好为 <span
+class="math inline">\(1\)</span>，因此只有当 <span
+class="math inline">\(n = 0\)</span> 或 <span class="math inline">\(n =
+p\)</span> 的时候 <span class="math inline">\(n!(p-n)!\)</span>
+的质因子分解中含有 <span class="math inline">\(p\)</span>，因此 <span
+class="math inline">\(\displaystyle\binom{p}{n} \bmod p = [n = 0 \vee n
+= p]\)</span>。进而我们可以得出:</p>
+<p><span class="math display">\[
+\begin{align} (a+b)^p &amp;= \sum_{n=0}^p \binom pn a^n b^{p-n}\\
+&amp;\equiv \sum_{n=0}^p [n=0\vee n=p] a^n b^{p-n}\\ &amp;\equiv a^p +
+b^p \pmod p \end{align}
+\]</span></p>
+<p>注意过程中没有用到费马小定理，因此这一推导不仅适用于整数，亦适用于多项式。因此我们可以考虑二项式
+<span class="math inline">\(f^p(x)=(ax^n + bx^m)^p \bmod p\)</span>
+的结果</p>
+<p><span class="math display">\[
+\begin{align} (ax^n + bx^m)^p &amp;\equiv a^p x^{pn} + b^p x^{pm} \\
+&amp;\equiv ax^{pn} + bx^{pm}\\ &amp;\equiv f(x^p) \end{align}
+\]</span></p>
+<blockquote>
+<p>note: <span class="math inline">\(a^{p-1}\equiv
+1\pmod{p}\)</span></p>
+</blockquote>
+<p>考虑二项式 <span class="math inline">\((1+x)^n \bmod p\)</span>，那么
+<span class="math inline">\(\displaystyle\binom n m\)</span> 就是求其在
+<span class="math inline">\(x^m\)</span>
+次项的取值。使用上述引理，我们可以得到</p>
+<p><span class="math display">\[
+\begin{align} (1+x)^n &amp;\equiv (1+x)^{p\lfloor n/p \rfloor}
+(1+x)^{n\bmod p}\\ &amp;\equiv (1+x^p)^{\lfloor n/p \rfloor}
+(1+x)^{n\bmod p} \end{align}
+\]</span></p>
+<p>注意前者只有在 <span class="math inline">\(p\)</span>
+的倍数位置才有取值，而后者最高次项为 <span class="math inline">\(n\bmod
+p \le
+p-1\)</span>，因此这两部分的卷积在任何一个位置只有最多一种方式贡献取值，即在前者部分取
+<span class="math inline">\(p\)</span>
+的倍数次项，后者部分取剩余项，即</p>
+<p><span class="math display">\[
+\displaystyle\binom{n}{m}\bmod p = \binom{\left\lfloor n/p
+\right\rfloor}{\left\lfloor m/p\right\rfloor}\cdot\binom{n\bmod
+p}{m\bmod p}\bmod p
+\]</span></p>
+<h2 id="扩展-lucas定理">扩展 Lucas定理</h2>
+<p>求</p>
+<p><span class="math display">\[
+{\mathrm{C}}_n^m \bmod{p}
+\]</span></p>
+<p>其中 <span class="math inline">\(p\le
+10^6\)</span>，<strong>不保证</strong> <span
+class="math inline">\(p\)</span> 为质数。</p>
+<h3 id="证明-1">证明</h3>
+<p><a
+href="https://www.luogu.com.cn/blog/wohaocaia/solution-p4720">扩展Lucas定理
+- HorizonWind 的洛谷博客</a></p>
+<h2 id="莫比乌斯反演">莫比乌斯反演</h2>
+<p>若 <span class="math inline">\(f\)</span> 是算数函数，<span
+class="math inline">\(F\)</span> 为 <span
+class="math inline">\(f\)</span> 的和函数，对任意正整数 <span
+class="math inline">\(n\)</span>，满足 <span
+class="math inline">\(F(n)=\sum_{d\mid n}f(d)\)</span>，则有 <span
+class="math inline">\(f(n)=\sum_{d\mid
+n}\mu(d)F(\frac{n}{d})\)</span></p>
+<p>证明：</p>
+<p><span class="math inline">\(i\mid\frac{n}{d}\iff id\mid n\iff d\mid
+\frac{n}{i}\)</span></p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{d\mid n}\mu(d)F(\frac{n}{d})&amp;=\sum_{d\mid
+n}\mu(d)\sum_{i\mid\frac{n}{d}}f(i) \\
+&amp;=\sum_{i\mid n}f(i)\sum_{d\mid\frac{n}{i}}\mu(d)
+\end{align}
+\]</span></p>
+<p>当 <span class="math inline">\(\frac{n}{i}\)</span> 为 <span
+class="math inline">\(1\)</span> 的时候，<span
+class="math inline">\(\sum_{d\mid\frac{n}{i}}\mu(d)=1\)</span>，其它均为
+<span class="math inline">\(0\)</span>。</p>
+<p>所以</p>
+<p><span class="math display">\[
+\sum_{d\mid n}\mu(d)F(\frac{n}{d})=f(n)
+\]</span></p>
+<hr />
+<p>若 <span class="math inline">\(F(n)=\sum_{n\mid d}f(d)\)</span>，则
+<span class="math inline">\(f(n)=\sum_{n\mid
+d}\mu(\frac{d}{n})F(d)\)</span></p>
+<p>证明： <span class="math display">\[
+\sum_{n\mid d}\mu(\frac{d}{n})F(d)=\sum_{n\mid
+d}\mu(\frac{d}{n})\sum_{d\mid i}f(i)
+\]</span> <span class="math inline">\(n\mid d\)</span>，设 <span
+class="math inline">\(d&#39;=\frac{d}{n}\)</span>，<span
+class="math inline">\(d=d&#39;n\)</span></p>
+<p><span class="math inline">\(d\mid i\)</span>，则 <span
+class="math inline">\(d&#39;n\mid i\)</span>，即 <span
+class="math inline">\(d&#39;\mid \frac{i}{n}\)</span> <span
+class="math display">\[
+\sum_{n\mid d}\mu(\frac{d}{n})\sum_{d\mid i}f(i)=\sum_{n\mid
+i}f(i)\sum_{d&#39;\mid\frac{i}{n}}\mu(d&#39;)
+\]</span> 当 <span class="math inline">\(\frac{i}{n}\)</span> 为 <span
+class="math inline">\(1\)</span>，即 <span
+class="math inline">\(i=n\)</span> 时，<span
+class="math inline">\(\sum_{d&#39;\mid\frac{i}{n}}\mu(d&#39;)=1\)</span>，其余均为
+<span class="math inline">\(0\)</span></p>
+<p>所以</p>
+<p><span class="math display">\[
+\sum_{n\mid d}\mu(\frac{d}{n})F(d)=f(n)
+\]</span></p>
+<h3 id="反演结论">反演结论</h3>
+<p><span class="math display">\[
+d(ij)=\sum_{x\mid i}\sum_{y\mid j}[\gcd(x,y)=1]
+\]</span></p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>算法竞赛</category>
+        <category>数论</category>
       </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
   </entry>
 </search>
