@@ -406,15 +406,16 @@ by_2=ay_2+b(x_2-\lfloor\frac{a}{b}\rfloor y_2)\)</span></p>
 class="math inline">\(x_1=y_2,y_1=x_2-\lfloor\frac{a}{b}\rfloor
 y_2\)</span></p>
 <p>将 <span class="math inline">\(x_2,y_2\)</span> 不断代入递归求解直至
-<span class="math inline">\(\gcd\)</span>（最大公约数，下同）为
-<code>0</code> 递归 <code>x=1,y=0</code> 回去求解。</p>
+<span class="math inline">\(\gcd\)</span>（最大公约数，下同）为 0 递归
+<code>x=1,y=0</code> 回去求解。</p>
 <details class="note info no-icon"><summary><p>code</p>
 </summary>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!b) &#123;</span><br><span class="line">    x = <span class="number">1</span>;</span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> d = <span class="built_in">exgcd</span>(b, a % b, x, y);</span><br><span class="line">  <span class="type">int</span> t = x;</span><br><span class="line">  x = y;</span><br><span class="line">  y = t - (a / b) * y;</span><br><span class="line">  <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </details>
 <h2 id="同余方程">同余方程</h2>
-<p>求关于 $ x$ 的同余方程 $ a x b$ 的最小正整数解。</p>
+<p>求关于 <span class="math inline">\(x\)</span> 的同余方程 <span
+class="math inline">\(a x \equiv 1 \pmod b\)</span> 的最小正整数解。</p>
 <p>对于 <span class="math inline">\(100\%\)</span> 的数据，<span
 class="math inline">\(2\le a, b\le 2,000,000,000\)</span>。</p>
 <h3 id="solution">solution</h3>
@@ -629,5 +630,21 @@ d(ij)=\sum_{x\mid i}\sum_{y\mid j}[\gcd(x,y)=1]
         <category>算法竞赛</category>
         <category>数论</category>
       </categories>
+  </entry>
+  <entry>
+    <title>花又落</title>
+    <url>/2026/02/09/%E8%8A%B1%E5%8F%88%E8%90%BD/</url>
+    <content><![CDATA[<p>异乡求学，寒暑更替，时隔半年终于再次回到了达活泉公园。上次来还是暑假，这次走到南门西侧，我不禁在想：天这么冷，那群“合唱团”的爷爷奶奶们还在吗？</p>
+<p>还没走到跟前，长廊内溢出的歌声就打消了我的顾虑。与去年露天的景象不同，不知是否是为了御寒，长廊入口挂起了厚门帘，内部也被隔断围成了一间温馨的小屋，镂空的窗棂更是细心地用塑料布封得严严实实——想必是他们自己动的手。</p>
+<p>“合唱团”壮大了不少，但伴奏依旧是那位拉二胡的爷爷，那是团里唯一的乐器。驻足倾听，《军人本色》、《花又落》、《小白杨》，和去年听到的顺序一模一样。尤其是《花又落》，正是因为去年听了他们的合唱，我才特意加进了自己的歌单，我一直觉得他们这首的合唱比原唱动听。</p>
+<p>我站在门口，年轻的面孔显得有些格格不入。他们停下来看着我，眼神里带着疑惑，似乎在想这是谁家的孙子。我冲他们笑了笑，像久别重逢的老友。</p>
+<p>每次回家，我都要来这里看一看。这群充满活力的老人，仿佛成了我与故乡之间某种隐秘的纽带，那股热气腾腾的生命力，总能激励着我继续前行。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
 </search>
